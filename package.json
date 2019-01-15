@@ -1,0 +1,27 @@
+{
+  "name": "tinyapp",
+  "version": "1.0.0",
+  "description": "TinyApp Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoftwareSam/W2D2.git"
+  },
+  "keywords": [
+    "Tiny",
+    "App"
+  ],
+  "author": "Sam Soheylee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SoftwareSam/W2D2/issues"
+  },
+  "homepage": "https://github.com/SoftwareSam/W2D2#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
