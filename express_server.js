@@ -73,7 +73,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.post("/urls/:id/delete", (req, res) => {
   console.log(req.params);
   delete urlDatabase[req.params.id];
-
+  res.redirect("/urls");
 });
 
 
