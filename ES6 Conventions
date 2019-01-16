@@ -1,0 +1,18 @@
+ES6 Conventions
+
+Use const by default.
+Use let if you have to rebind a variable.
+Use var to signal untouched legacy (old) code, that is avoid using var and use let going forward instead.
+
+CRUD - Create, Read, Update and Delete.
+
+HTTP Method -- CRUD Action
+
+       GET  --  Read
+      POST  --  Create
+       PUT  --  Update
+    DELETE  --  Delete
+
+To create PUT and DELETE requests we would need to use a workaround known as HTTP Method Override, but for simplicity we will make do with just GET and POST. Instead of PUT and DELETE, we will use POST.
+
+nodemon -L express_server.js
