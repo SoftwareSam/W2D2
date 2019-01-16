@@ -42,6 +42,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  console.log(urlDatabase);
   res.render("urls_new");
 });
 
@@ -58,7 +59,7 @@ app.post("/urls", (req, res) => {
   let short = generateRandomString();
   // console.log(long, short);
   urlDatabase[short] = long;
-  res.send(urlDatabase);
+  res.redirect(long);
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -69,7 +70,11 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+  console.log(req.params);
+  delete urlDatabase[req.params.id];
 
+});
 
 
 

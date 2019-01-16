@@ -8,8 +8,12 @@
   <ul>
     <% for (let key in urls) { %>
       <li><%= key %> - <%= urls[key] %></li>
+      <form method="POST" action=<%=`/urls/${key}/delete` %>>
+        <button type="submit"> Delete </button>
     <% } %>
     <a href='#'>Shorten</a>
+
+
   </ul>
 </body>
 </html>
