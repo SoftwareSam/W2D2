@@ -97,9 +97,17 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+app.get("/register", (req, res) => {
+  let templateVars = { email: req.cookies["email"] };
+  res.render("urls_register", templateVars);
+});
 
-
-
+app.post("/register", (req, res) =>{
+  res.cookie("email", req.body.email);
+  res.cookie("password", req.body.password);
+  res.send("Email: " + req.body.email + " - Password: " + req.body.password);
+  // res.send(req.body.password)
+});
 
 
 
