@@ -1,1 +1,14 @@
-<h2>THIS IS A HEADER</h2>
+<h2>LOGIN</h2>
+
+
+<% if (username) { %>
+  <h2>Name is <%= username %></h2>
+  <form method="POST" action="/logout">
+    <button type="logout"> Logout </button>
+  </form>
+<% } else { %>
+  <form method="POST" action="/login">
+    <input type="text" id="name" name="username">
+    <button type="submit"> Submit </button>
+  </form>
+<% } %>
