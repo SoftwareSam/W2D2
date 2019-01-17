@@ -132,8 +132,9 @@ app.post("/register", (req, res) =>{
 
   res.cookie("email", req.body.email);
   res.cookie("password", req.body.password);
-  res.send("Email: " + req.body.email + " - Password: " + req.body.password);
+
   console.log(users);
+  res.redirect("/urls");
 });
 
 
