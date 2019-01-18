@@ -122,26 +122,43 @@ app.get("/register", (req, res) => {
   res.render("urls_register");
 });
 
-app.post("/register", (req, res) =>{
+
+
+
+app.post("/register", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
-  let id = generateRandomString();
-  users[id] = {
-     id: id,
-     email: email,
-     password: password
-   };
 
-
-  res.cookie("user_id", id); //
-
-  console.log(users);
-
-  if(!email || !password){
+  if(!email || !password) {
 
     res.status(400).send("Email or Password fields are empty");
+
   } else {
-    res.redirect("/urls");
+
+    for(let key in users){
+
+      if (users[key].email === email) {
+        console.log("Email exists");
+        return res.status(400).send("Email already exists");
+      }
     }
+
+    let id = generateRandomString();
+
+        users[id] = {
+          id: id,
+          email: email,
+          password: password
+        };
+        res.cookie("user_id", id);
+        res.redirect("/urls");
+        console.log(users);
+   }
 });
+
+
+
+
+
+
 
