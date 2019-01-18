@@ -73,6 +73,8 @@ app.get("/urls/:id", (req, res) => {
     urls: urlDatabase,
     username: req.cookies["username"],
   };
+
+
   res.render("urls_show", templateVars);
 });
 
@@ -116,8 +118,8 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  let templateVars = { email: req.cookies["email"] };
-  res.render("urls_register", templateVars);
+
+  res.render("urls_register");
 });
 
 app.post("/register", (req, res) =>{
@@ -130,12 +132,16 @@ app.post("/register", (req, res) =>{
      password: password
    };
 
-  res.cookie("email", req.body.email);
-  res.cookie("password", req.body.password);
+
+  res.cookie("user_id", id); //
 
   console.log(users);
-  res.redirect("/urls");
+
+  if(!email || !password){
+
+    res.status(400).send("Email or Password fields are empty");
+  } else {
+    res.redirect("/urls");
+    }
 });
-
-
 
