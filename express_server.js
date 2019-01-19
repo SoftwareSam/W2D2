@@ -68,8 +68,12 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  console.log(urlDatabase);
-  res.render("urls_new");
+  let templateVars =
+  {
+    username: users[req.cookies["user_id"]].email //refresh on this
+  };
+
+  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {

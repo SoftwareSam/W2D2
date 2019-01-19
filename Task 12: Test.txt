@@ -1,0 +1,14 @@
+Task 12: Test
+Open your application in the browser and make sure that:
+
+A user can register
+  OK
+
+A user can log in with a correct email/password
+  OK
+
+A user sees the correct information in the header
+
+
+A user cannot log in with an incorrect email/password
+A user can log out
