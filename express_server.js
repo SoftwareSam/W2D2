@@ -2,6 +2,8 @@ var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 var cookieParser = require('cookie-parser');
+  const bcrypt = require('bcrypt');
+
 
 const bodyParser = require("body-parser");
 
@@ -186,7 +188,9 @@ app.post("/login", (req, res) => {
 
     for(let key in users){
 
-      if (users[key].email === email && users[key].password === password) {
+      if (users[key].email === email && bcrypt.compareSync(password, users[key].password)) {
+                                    // bcrypt.compareSync(password, users[key])
+                                    // users[key].password === password
         console.log("Email exists");
         res.cookie("user_id", key);
         console.log(req.body.email);
@@ -213,6 +217,7 @@ app.get("/register", (req, res) => {
 
 
 app.post("/register", (req, res) => {
+
   let email = req.body.email;
   let password = req.body.password;
 
@@ -221,6 +226,8 @@ app.post("/register", (req, res) => {
     res.status(400).send("Email or Password fields are empty");
 
   } else {
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     for(let key in users){
 
@@ -235,7 +242,7 @@ app.post("/register", (req, res) => {
         users[id] = {
           id: id,
           email: email,
-          password: password
+          password: hashedPassword
         };
         res.cookie("user_id", id);
         res.redirect("/urls");
