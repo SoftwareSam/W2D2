@@ -63,10 +63,22 @@ app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
+function urlsForUser(id) {
+  let userURLS = {}
+
+  for(key in urlDatabase){
+    if(urlDatabase[key].user_id === id){
+      userURLS[key] = urlDatabase[key];
+    }
+  }
+  // when done make the opposite true, where every URL not owned by the user is displayed
+  return userURLS;
+}
+
 app.get("/urls", (req, res) => {
   let templateVars =
   {
-    urls: urlDatabase,
+    urls: urlsForUser(req.cookies["user_id"]),
     username: users[req.cookies["user_id"]].email //refresh on this
   };
 
@@ -89,16 +101,23 @@ app.get("/urls/new", (req, res) => {
 
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars =
 
-  {
-    shortURL: req.params.id,
-    urls: urlDatabase,
-    username: users[req.cookies["user_id"]].email,
-  };
+  if(req.cookies["user_id"] == urlDatabase[req.params.id].user_id){
+
+    let templateVars =
+    {
+      shortURL: req.params.id,
+      urls: urlDatabase,
+      username: users[req.cookies["user_id"]].email,
+    };
+    res.render("urls_show", templateVars);
+  }
+  else {
+    return res.status(400).send("Error");
+  }
 
 
-  res.render("urls_show", templateVars);
+
 });
 
 app.post("/urls/:id", (req, res) => {
@@ -108,6 +127,9 @@ app.post("/urls/:id", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
+
+
+
   let long = req.body.longURL;
   let short = generateRandomString();
   urlDatabase[short] = {
@@ -137,9 +159,6 @@ app.post("/urls/:id/delete", (req, res) => {
     return res.redirect("/urls");
   }
 
-  // console.log(req.params);
-  // delete urlDatabase[req.params.id];
-  // res.redirect("/urls");
 });
 
 
