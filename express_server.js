@@ -136,16 +136,19 @@ app.post("/login", (req, res) => {
 
     for(let key in users){
 
-      if (users[key].email === email) {
+      if (users[key].email === email && users[key].password === password) {
         console.log("Email exists");
-        return res.status(400).send("Email already exists");
+        res.cookie("user_id", key);
+        console.log(req.body.email);
+        return res.redirect("/");
+
       }
     }
+
+    return res.status(400).send("Wrong Email or Password");
+
   }
 
-  res.cookie("user_id", req.body.email);
-  console.log(req.body.email);
-  res.redirect("/");
 });
 
 app.post("/logout", (req, res) => {
