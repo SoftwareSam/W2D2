@@ -7,13 +7,9 @@
     <button type="logout"> Logout </button>
   </form>
 
-
-
 <% } else { %>
 
+  <a href="/register"> Register </a>
+  <a href="/login"> Login </a>
 
-  <form method="POST" action="/login">
-    <input type="text" id="name" name="username">
-    <button type="submit"> Submit </button>
-  </form>
 <% } %>

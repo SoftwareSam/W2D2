@@ -112,11 +112,40 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 });
 
+
+
+app.get("/login", (req, res) => {
+
+  let templateVars = {
+    username: "",
+  };
+
+  res.render("urls_login", templateVars);
+});
+
 app.post("/login", (req, res) => {
 
-  res.cookie("username", req.body.user_id);
-  console.log(req.body.user_id);
-  res.redirect("/urls");
+  let email = req.body.email;
+  let password = req.body.password;
+
+  if(!email || !password) {
+
+    res.status(400).send("Email or Password fields are empty");
+
+  } else {
+
+    for(let key in users){
+
+      if (users[key].email === email) {
+        console.log("Email exists");
+        return res.status(400).send("Email already exists");
+      }
+    }
+  }
+
+  res.cookie("user_id", req.body.email);
+  console.log(req.body.email);
+  res.redirect("/");
 });
 
 app.post("/logout", (req, res) => {
@@ -128,8 +157,6 @@ app.get("/register", (req, res) => {
 
   res.render("urls_register");
 });
-
-
 
 
 app.post("/register", (req, res) => {
