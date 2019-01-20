@@ -2,15 +2,20 @@ var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 var cookieParser = require('cookie-parser');
-var cookieSession = require('cookie-session')
+var cookieSession = require('cookie-session');
+
 const bcrypt = require('bcrypt');
-
-
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['i swear im an actual key'],
+
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 
 function generateRandomString() {
   var randomId = require('random-id');
@@ -81,8 +86,8 @@ function urlsForUser(id) {
 app.get("/urls", (req, res) => {
   let templateVars =
   {
-    urls: urlsForUser(req.session.user_id),
-    username: users[req.session.user_id].email //refresh on this
+    urls: urlsForUser(req.session.user_id), // original (req.cookies["user_id"]),
+    username: users[req.session.user_id].email //original r[req.cookies["user_id"]].email
   };
 
   res.render("urls_index", templateVars);
@@ -92,7 +97,7 @@ app.get("/urls/new", (req, res) => {
 
   if (req.session.user_id){
     let templateVars = {
-      username: users[req.session.user_id].email //refresh on this
+      username: users[req.session.user_id].email //original  username: users[req.cookies["user_id"]].email
     };
     return res.render("urls_new", templateVars);
 
@@ -105,7 +110,7 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
 
-  if(req.session.user_id == urlDatabase[req.params.id].user_id){
+  if(req.session.user_id == urlDatabase[req.params.id].user_id){ //original if(req.cookies["user_id"]
 
     let templateVars =
     {
@@ -125,7 +130,7 @@ app.get("/urls/:id", (req, res) => {
 
 app.post("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL].LURL = req.body.longURL;
   res.redirect("/urls/");
 });
 
@@ -193,7 +198,7 @@ app.post("/login", (req, res) => {
                                     // bcrypt.compareSync(password, users[key])
                                     // users[key].password === password
         console.log("Email exists");
-        req.session.user_id = key;
+        req.session.user_id = key;  //original  res.cookie("user_id", key);
         console.log(req.body.email);
         return res.redirect("/");
 
@@ -207,7 +212,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.session.user_id = null;
+  req.session.user_id = null;
   res.redirect("/urls");
 });
 
@@ -240,14 +245,15 @@ app.post("/register", (req, res) => {
 
     let id = generateRandomString();
 
-        users[id] = {
-          id: id,
-          email: email,
-          password: hashedPassword
-        };
-        req.session.user_id = id;
-        res.redirect("/urls");
-        console.log(users);
+    users[id] = {
+      id: id,
+      email: email,
+      password: hashedPassword
+    };
+
+    req.session.user_id = id; //original res.cookie("user_id", id);
+    res.redirect("/urls");
+    console.log(users);
    }
 });
 
